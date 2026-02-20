@@ -1,1 +1,1 @@
-# PDM-microphone-arduinoQ
+# Qualcomm-Arduino-Edge WS2026

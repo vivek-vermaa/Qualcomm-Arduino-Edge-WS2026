@@ -1,0 +1,6 @@
+name: Hey Arduino! NeoPixel (Analog Mic)
+icon: 💡
+description: Workshop example for Qualcomm-Arduino Edge event. Detects the "Hey Arduino!" keyword using an analog microphone and toggles a NeoPixel strip (via Adafruit NeoDriver I2C at address 0x60) connected to the Qwiic port.
+
+bricks:
+  - arduino:keyword_spotting

@@ -10,7 +10,7 @@
 #define NEO_PIN         15
 #define NUM_PIXELS      5
 
-seesaw_NeoPixel strip(NUM_PIXELS, NEO_PIN, NEO_GRB + NEO_KHZ800);
+seesaw_NeoPixel strip(NUM_PIXELS, NEO_PIN, NEO_GRB + NEO_KHZ800, &Wire1);
 
 void setAll(uint32_t color) {
   for (int i = 0; i < NUM_PIXELS; i++) strip.setPixelColor(i, color);

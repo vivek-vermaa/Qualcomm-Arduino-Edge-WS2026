@@ -505,7 +505,7 @@
       "plot": "QWIIC_LED_GERBERS_V1.0/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "QWIIC_LEDs.step",
       "svg": "",
       "vrml": ""
     },
@@ -550,7 +550,7 @@
           "group_by": false,
           "label": "Datasheet",
           "name": "Datasheet",
-          "show": true
+          "show": false
         },
         {
           "group_by": false,
@@ -574,7 +574,7 @@
           "group_by": false,
           "label": "LCSC#",
           "name": "LCSC#",
-          "show": false
+          "show": true
         },
         {
           "group_by": false,
@@ -586,13 +586,13 @@
           "group_by": false,
           "label": "manf#",
           "name": "manf#",
-          "show": false
+          "show": true
         },
         {
           "group_by": false,
           "label": "provedor",
           "name": "provedor",
-          "show": false
+          "show": true
         },
         {
           "group_by": true,
@@ -618,7 +618,7 @@
       "include_excluded_from_bom": true,
       "name": "",
       "sort_asc": true,
-      "sort_field": "Reference"
+      "sort_field": "LCSC#"
     },
     "connection_grid_size": 50.0,
     "drawing": {

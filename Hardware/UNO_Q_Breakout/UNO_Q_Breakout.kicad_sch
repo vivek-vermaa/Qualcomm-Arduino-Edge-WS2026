@@ -4097,7 +4097,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manf#" "FTSH-130-04-L-DV"
+		(property "Manf#" "20021121-00034T4LF"
 			(at 144.145 92.71 0)
 			(effects
 				(font
@@ -4365,6 +4365,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Manf#" "84952-6"
+			(at 215.9 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"

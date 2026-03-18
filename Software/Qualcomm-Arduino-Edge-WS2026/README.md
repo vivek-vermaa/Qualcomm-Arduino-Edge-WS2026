@@ -1,4 +1,4 @@
-# Hey Arduino! — Qualcomm-Arduino Edge Workshop 2026
+# Qualcomm Arduino Edge WS2026 — Qualcomm-Arduino Edge Workshop 2026
 
 This example is part of the **Qualcomm-Arduino Edge Workshop 2026**. It detects the keyword **"Hey Arduino"** through an analog microphone connected directly to the Arduino UNO Q, and toggles a NeoPixel strip connected via the onboard Qwiic port.
 
@@ -25,11 +25,12 @@ Unlike the standard keyword-spotting example, this setup uses the **analog micro
 
 > **This step is required once per board.** It configures the ALSA audio subsystem, creates the device symlink expected by `arduino-app-cli`, and patches the Docker image to support the analog microphone.
 
-Run the setup script from the `Software/` folder of this repository:
+Clone the repository on the Arduino UNO Q and run the setup script:
 
 ```bash
-chmod +x Software/setup-arduino-q-mic-applab.sh
-sudo ./Software/setup-arduino-q-mic-applab.sh
+sudo git clone https://github.com/ElectronicCats/Qualcomm-Arduino-Edge-WS2026
+cd Qualcomm-Arduino-Edge-WS2026
+sudo Software/setup-arduino-q-mic-applab.sh
 ```
 
 After the script completes, **reboot the board**:
@@ -38,10 +39,10 @@ After the script completes, **reboot the board**:
 sudo reboot
 ```
 
-The script also copies this example to `/home/arduino/ArduinoApps/` automatically. If you need to re-deploy it manually:
+The script copies this example to `/home/arduino/ArduinoApps/` automatically. If you need to re-deploy it manually:
 
 ```bash
-sudo ./Software/setup-arduino-q-mic-applab.sh --deploy-example
+sudo Software/setup-arduino-q-mic-applab.sh --deploy-example
 ```
 
 ## How to Use the Example

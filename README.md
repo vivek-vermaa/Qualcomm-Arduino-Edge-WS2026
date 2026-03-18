@@ -1,130 +1,95 @@
-# Micrófono Analógico — Arduino UNO Q (QRB2210)
+# Qualcomm Arduino Edge WS2026 — Qualcomm-Arduino Edge Workshop 2026
 
-## Cableado físico (CRÍTICO)
+This example is part of the **Qualcomm-Arduino Edge Workshop 2026**. It detects the keyword **"Hey Arduino"** through an analog microphone connected directly to the Arduino UNO Q, and toggles a NeoPixel strip connected via the onboard Qwiic port.
 
-```
-Micrófono electret (3 cables)     JMISC / Board
-─────────────────────────────     ─────────────
-MIC+  (señal)           ──────→   Pin 29 (JMISC)
-MICBIAS (alimentación)  ──────→   1.8V del board  ← NO usar pin 33
-GND                     ──────→   GND
-```
+Unlike the standard keyword-spotting example, this setup uses the **analog microphone input** of the Arduino UNO Q instead of a USB microphone, requiring a one-time board configuration before launching the app.
 
-> ⚠️ El pin 33 del JMISC (MICBIAS) está definido en el device tree pero
-> no entrega voltaje físicamente. Conectar el cápsulo directamente al
-> riel de 1.8V del board.
+## Bricks Used
 
----
+- `keyword_spotting` — detects sound patterns and triggers an event when a keyword is matched.
 
-## Instalación en placa nueva
+## Hardware and Software Requirements
 
-```bash
-# Copiar el script al board (desde tu PC)
-scp setup-mic-uno-q.sh arduino@<IP_DEL_BOARD>:~
+### Hardware
 
-# En el board
-sudo bash setup-mic-uno-q.sh
-```
+- [Arduino® UNO Q](https://store.arduino.cc/products/uno-q)
+- SupplyFrame analog microphone board (connected to the analog mic input)
+- SupplyFrame NeoDriver I2C board (address `0x60`) with NeoPixel strip, connected to the Qwiic port
 
-El script hace todo automáticamente:
-- Configura los controles ALSA mixer
-- Crea `/etc/asound.conf` (redirige default → hw:0,2)
-- Crea wrapper de sox en `/usr/local/bin/sox`
-- Instala servicio systemd `mic-uno-q` (configura mixer en cada boot)
-- Verifica que el micrófono funciona
+### Software
 
----
+- Arduino App Lab
+- One-time board setup — see [Setup](#setup) below
 
-## Uso después del setup
+## Setup
 
-### Grabar audio
-```bash
-# Con el script incluido
-./mic.sh 5 grabacion.wav
+> **This step is required once per board.** It configures the ALSA audio subsystem, creates the device symlink expected by `arduino-app-cli`, and patches the Docker image to support the analog microphone.
 
-# Directo con arecord
-arecord -D hw:0,2 -f S16_LE -r 16000 -c 1 -d 5 output.wav
-```
-
-### Edge Impulse
-```bash
-edge-impulse-linux --disable-camera
-```
-
----
-
-## Path de audio (referencia técnica)
-
-```
-JMISC Pin 29
-    │
-    ↓
-AMIC2 (pm4125 codec)
-    │
-    ↓
-MIC BIAS2 (1.8V — DAPM widget, activo automáticamente)
-    │
-    ↓
-ADC2 → ADC2 MUX (INP2)
-    │
-    ↓
-SoundWire → SWR_MIC1
-    │
-    ↓
-TX Macro → TX DEC0 (SWR_MIC)
-    │
-    ↓
-TX_AIF1_CAP DEC0
-    │
-    ↓
-DMA TX_CODEC_DMA_TX_3
-    │
-    ↓
-MultiMedia3 (hw:0,2)
-```
-
----
-
-## Controles ALSA (valores óptimos)
-
-| Control | Valor |
-|---|---|
-| TX DEC0 MUX | SWR_MIC |
-| TX SMIC MUX0 | SWR_MIC1 |
-| ADC2 MUX | INP2 |
-| ADC2 Switch | on |
-| ADC2 Volume | 8 (+1.75dB max) |
-| ADC2_MIXER Switch | on |
-| TX_DEC0 Volume | 82 (~-3dB) |
-| TX_AIF1_CAP Mixer DEC0 | on |
-| MultiMedia3 Mixer TX_CODEC_DMA_TX_3 | on |
-
----
-
-## Parámetros de captura
-
-| Parámetro | Valor |
-|---|---|
-| Device ALSA | hw:0,2 (MultiMedia3) |
-| Formato | S16_LE |
-| Sample rate | 16000 Hz |
-| Canales | 1 (mono) |
-
----
-
-## Verificación rápida
+Clone the repository on the Arduino UNO Q and run the setup script:
 
 ```bash
-# RMS noise floor (sin voz): ~200-300
-# RMS con voz normal: ~1000-3000
-# Si RMS con voz < 500: revisar cableado físico
-
-arecord -D hw:0,2 -f S16_LE -r 16000 -c 1 -d 2 /tmp/test.wav 2>/dev/null
-python3 -c "
-import wave,struct,math
-with wave.open('/tmp/test.wav') as f:
-    d=f.readframes(f.getnframes())
-s=struct.unpack('<'+'h'*(len(d)//2),d)
-print(f'RMS={int(math.sqrt(sum(x*x for x in s)/len(s)))}')
-"
+sudo git clone https://github.com/ElectronicCats/Qualcomm-Arduino-Edge-WS2026
+cd Qualcomm-Arduino-Edge-WS2026
+sudo Software/setup-arduino-q-mic-applab.sh
 ```
+
+After the script completes, **reboot the board**:
+
+```bash
+sudo reboot
+```
+
+The script copies this example to `/home/arduino/ArduinoApps/` automatically. If you need to re-deploy it manually:
+
+```bash
+sudo Software/setup-arduino-q-mic-applab.sh --deploy-example
+```
+
+## How to Use the Example
+
+### Hardware Setup
+
+1. Connect the analog microphone board to the analog mic input of the Arduino UNO Q.
+2. Connect the SupplyFrame NeoDriver I2C board to the **Qwiic port** on the Arduino UNO Q.
+3. Connect a NeoPixel strip to the NeoDriver (up to 5 pixels supported out of the box).
+
+![Hardware setup](assets/docs_assets/hardware-setup.png)
+
+### Launch the App
+
+1. Open **Arduino App Lab** and connect to the board using **Network Mode**.
+2. Open this example and click the **Play** button in the top right corner.
+3. Wait for the app to launch.
+
+    ![Launching the app](assets/docs_assets/launch-app.png)
+
+4. Say **"Hey Arduino"** into the microphone.
+5. The NeoPixel strip toggles green on the first detection, and off on the next.
+
+### How it Works
+
+The `keyword_spotting` Brick continuously monitors the analog microphone input for the keyword **"Hey Arduino"**. When detected, it calls the microcontroller via the Bridge, which toggles the NeoPixel strip.
+
+![How Hey Arduino! works](assets/docs_assets/keyword-spotting.png)
+
+#### Why a setup script is needed
+
+The Arduino UNO Q uses a **Qualcomm QRB2210 SoC** with a Qualcomm LPASS audio DSP (Q6ASM). This DSP resets all ALSA mixer controls to `off` every time an audio capture session closes. The setup script:
+
+- Configures the ALSA mixer and installs a systemd service that re-applies the configuration at boot.
+- Creates the `/dev/snd/by-id` device symlink expected by `arduino-app-cli` to detect the microphone.
+- Patches the Docker image used by `arduino-app-cli` so that its Python `Microphone` class re-runs the mixer setup before opening each PCM session, and uses the full ALSA device name (`plughw:CARD=ArduinoImolaHPH,DEV=2`) required inside containers.
+
+### Understanding the Code
+
+**Python side (`python/main.py`):**
+
+- `spotter = KeywordSpotting()` — initializes the audio listener on the analog mic input.
+- `spotter.on_detect("hey_arduino", on_keyword_detected)` — registers the callback for the "Hey Arduino" keyword.
+- `Bridge.call("keyword_detected")` — notifies the microcontroller that the keyword was detected.
+
+**Microcontroller side (`sketch/sketch.ino`):**
+
+- `seesaw_NeoPixel strip(..., &Wire1)` — the NeoDriver is on `Wire1`, which maps to the Qwiic port on the UNO Q.
+- `Bridge.provide("keyword_detected", wake_up)` — registers the handler called by the Python side.
+- `wake_up()` — toggles the NeoPixel strip between green and off on each detection.

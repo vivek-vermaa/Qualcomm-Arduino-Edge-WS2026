@@ -348,6 +348,7 @@ deploy_example() {
 
   mkdir -p "${examples_dir}"
   cp -r "${src}" "${dest}"
+  chown -R arduino:arduino "${dest}"
   ok "Example deployed to ${dest}"
   ok "Step 4 complete."
 }

@@ -11,6 +11,7 @@
 #define NUM_PIXELS      5
 
 seesaw_NeoPixel strip(NUM_PIXELS, NEO_PIN, NEO_GRB + NEO_KHZ800, &Wire1);
+bool ledsOn = false;
 
 void setAll(uint32_t color) {
   for (int i = 0; i < NUM_PIXELS; i++) strip.setPixelColor(i, color);
@@ -31,17 +32,10 @@ void setup() {
 void loop() {}
 
 void wake_up() {
-  // Color wipe green
-  for (int i = 0; i < NUM_PIXELS; i++) {
-    strip.setPixelColor(i, strip.Color(0, 200, 0));
-    strip.show();
-    delay(80);
+  ledsOn = !ledsOn;
+  if (ledsOn) {
+    setAll(strip.Color(0, 200, 0));
+  } else {
+    setAll(0x000000);
   }
-  delay(500);
-  // Fade out
-  for (int b = 200; b >= 0; b -= 10) {
-    setAll(strip.Color(0, b, 0));
-    delay(30);
-  }
-  setAll(0x000000);
 }

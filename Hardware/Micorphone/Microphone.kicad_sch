@@ -1552,7 +1552,7 @@
 				)
 			)
 		)
-		(property "manf#" "ICS-40618"
+		(property "manf#" "ICS-40638"
 			(at 133.985 56.515 0)
 			(effects
 				(font
@@ -1646,7 +1646,7 @@
 				)
 			)
 		)
-		(property "manf#" ""
+		(property "manf#" "0603X225K6R3CT"
 			(at 149.225 56.515 0)
 			(effects
 				(font
@@ -1732,7 +1732,7 @@
 				)
 			)
 		)
-		(property "manf#" ""
+		(property "manf#" "0603X225K6R3CT"
 			(at 149.225 53.975 0)
 			(effects
 				(font
@@ -1890,7 +1890,7 @@
 				(hide yes)
 			)
 		)
-		(property "manf#" ""
+		(property "manf#" "-"
 			(at 153.035 50.165 0)
 			(effects
 				(font
@@ -1974,7 +1974,7 @@
 				)
 			)
 		)
-		(property "manf#" "0522070633"
+		(property "manf#" "84952-6"
 			(at 40.64 60.96 0)
 			(effects
 				(font
@@ -2195,7 +2195,7 @@
 				)
 			)
 		)
-		(property "manf#" "0603F104Z160CT"
+		(property "manf#" "TMK107BJ104KA-T"
 			(at 114.935 55.245 0)
 			(effects
 				(font
@@ -2289,7 +2289,7 @@
 				(hide yes)
 			)
 		)
-		(property "manf#" ""
+		(property "manf#" "-"
 			(at 153.035 60.325 0)
 			(effects
 				(font

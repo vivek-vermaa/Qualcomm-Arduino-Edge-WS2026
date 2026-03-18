@@ -49,6 +49,14 @@ STAMP_ALSA="${STAMP_DIR}/alsa_done"
 STAMP_UDEV="${STAMP_DIR}/udev_done"
 STAMP_DOCKER="${STAMP_DIR}/docker_patched_v3_${APP_CLI_VERSION}"
 
+# Examples dir — check both /var/lib and ~/.local/share
+_detect_examples_dir() {
+  for base in /var/lib/arduino-app-cli ~/.local/share/arduino-app-cli; do
+    [ -d "${base}/examples" ] && echo "${base}/examples" && return
+  done
+  echo "/var/lib/arduino-app-cli/examples"  # fallback
+}
+
 # Colors
 if [ -t 1 ]; then
   RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; BLUE='\033[0;34m'; NC='\033[0m'

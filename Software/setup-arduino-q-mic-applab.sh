@@ -331,12 +331,14 @@ PYEOF
 # Step 4 — Deploy Qualcomm-Arduino-Edge-WS2026 example to ArduinoApps
 # ---------------------------------------------------------------------------
 deploy_example() {
-  info "Step 4: Deploying Qualcomm-Arduino-Edge-WS2026 to /home/arduino/ArduinoApps/..."
+  info "Step 4: Deploying Qualcomm-Arduino-Edge-WS2026 to examples..."
 
   local script_dir
   script_dir="$(dirname "$(realpath "$0")")"
   local src="${script_dir}/Qualcomm-Arduino-Edge-WS2026"
-  local dest="/home/arduino/ArduinoApps/Qualcomm-Arduino-Edge-WS2026"
+  local examples_dir
+  examples_dir="$(_detect_examples_dir)"
+  local dest="${examples_dir}/Qualcomm-Arduino-Edge-WS2026"
 
   if [ ! -d "${src}" ]; then
     warn "Example folder not found: ${src}"
@@ -344,9 +346,8 @@ deploy_example() {
     return
   fi
 
-  mkdir -p /home/arduino/ArduinoApps
+  mkdir -p "${examples_dir}"
   cp -r "${src}" "${dest}"
-  chown -R arduino:arduino /home/arduino/ArduinoApps
   ok "Example deployed to ${dest}"
   ok "Step 4 complete."
 }
@@ -383,8 +384,9 @@ verify() {
     warn "Docker image not present locally"; warn_count=$((warn_count + 1))
   fi
 
-  check "Qualcomm-Arduino-Edge-WS2026 deployed" \
-    "test -f /home/arduino/ArduinoApps/Qualcomm-Arduino-Edge-WS2026/app.yaml"
+  local examples_dir; examples_dir="$(_detect_examples_dir)"
+  check "Qualcomm-Arduino-Edge-WS2026 in examples" \
+    "test -f ${examples_dir}/Qualcomm-Arduino-Edge-WS2026/app.yaml"
 
   echo ""
   if [ "${warn_count}" -eq 0 ]; then

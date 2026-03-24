@@ -1,14 +1,23 @@
-# Qualcomm Arduino Edge WS2026 — Qualcomm-Arduino Edge Workshop 2026
+# UNO Q EchoGlow Workshop
 
-This example is part of the **Qualcomm-Arduino Edge Workshop 2026**. It detects the keyword **"Hey Arduino"** through an analog microphone connected directly to the Arduino UNO Q, and toggles a NeoPixel strip connected via the onboard Qwiic port.
+![EchoGlow works](Software/qualcomm-arduino-edge-ws2026/assets/docs_assets/EchoGlow.jpeg)
 
-Unlike the standard keyword-spotting example, this setup uses the **analog microphone input** of the Arduino UNO Q instead of a USB microphone, requiring a one-time board configuration before launching the app.
+
+The UNO Q EchoGlow is an AI-powered desktop light that can be operated with voice commands. It detects the keyword "Hey Arduino" through an analog microphone connected directly to the Arduino UNO Q, and toggles a NeoPixel strip connected via the onboard Qwiic port. These commands can be trained on Edge Impulse’s platform, and then uploaded to the Arduino UNO Q inside the EchoGlow. 
+Be sure to visit the project every now and then to check for updates and downloads:
+
+This setup uses the analog microphone input of the Arduino UNO Q instead of a USB microphone (unlike the standard keyword-spotting example), requiring a one-time board configuration before launching the app.
+
+[https://hackaday.io/project/205386-arduino-uno-q-echoglow](https://hackaday.io/project/205386-arduino-uno-q-echoglow
+)
 
 ## Bricks Used
 
 - `keyword_spotting` — detects sound patterns and triggers an event when a keyword is matched.
 
 ## Hardware and Software Requirements
+
+![Hardware setup](Software/qualcomm-arduino-edge-ws2026/assets/docs_assets/hardware-setup.jpeg)
 
 ### Hardware
 
@@ -44,6 +53,10 @@ The script copies this example to `/home/arduino/ArduinoApps/` automatically. If
 ```bash
 sudo Software/setup-arduino-q-mic-applab.sh --deploy-example
 ```
+#### Notes:
+```
+When running this firmware, only the analog microphone is available (no USB microphone). To revert this, format the UNO Q. 
+```
 
 ## How to Use the Example
 
@@ -53,7 +66,6 @@ sudo Software/setup-arduino-q-mic-applab.sh --deploy-example
 2. Connect the SupplyFrame NeoDriver I2C board to the **Qwiic port** on the Arduino UNO Q.
 3. Connect a NeoPixel strip to the NeoDriver (up to 5 pixels supported out of the box).
 
-![Hardware setup](assets/docs_assets/hardware-setup.png)
 
 ### Launch the App
 
@@ -61,7 +73,6 @@ sudo Software/setup-arduino-q-mic-applab.sh --deploy-example
 2. Open this example and click the **Play** button in the top right corner.
 3. Wait for the app to launch.
 
-    ![Launching the app](assets/docs_assets/launch-app.png)
 
 4. Say **"Hey Arduino"** into the microphone.
 5. The NeoPixel strip toggles green on the first detection, and off on the next.
@@ -70,7 +81,6 @@ sudo Software/setup-arduino-q-mic-applab.sh --deploy-example
 
 The `keyword_spotting` Brick continuously monitors the analog microphone input for the keyword **"Hey Arduino"**. When detected, it calls the microcontroller via the Bridge, which toggles the NeoPixel strip.
 
-![How Hey Arduino! works](assets/docs_assets/keyword-spotting.png)
 
 #### Why a setup script is needed
 

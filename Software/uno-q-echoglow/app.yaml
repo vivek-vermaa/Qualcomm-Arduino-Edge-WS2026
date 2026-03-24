@@ -1,0 +1,6 @@
+name: UNO Q EchoGlow
+icon: 💡
+description: AI-powered light controlled by voice commands. Detects keywords "Warmer-light", "Cooler-light", "Dimmer", and "Brighter" using an analog microphone and controls a NeoPixel strip (via Adafruit NeoDriver I2C at address 0x60) connected to the Qwiic port.
+
+bricks:
+  - arduino:keyword_spotting

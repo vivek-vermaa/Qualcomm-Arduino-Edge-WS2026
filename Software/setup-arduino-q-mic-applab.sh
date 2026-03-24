@@ -3,7 +3,7 @@
 # setup-arduino-q-mic-applab.sh
 #
 # Reproducible setup for the analog microphone on Arduino UNO Q
-# with Arduino Lab / Arduino App CLI (keyword-spotting / Hey Arduino!).
+# with Arduino Lab / Arduino App CLI (UNO Q EchoGlow).
 #
 # Usage:
 #   chmod +x setup-arduino-q-mic-applab.sh
@@ -18,7 +18,7 @@
 #      NOTE: The Qualcomm LPASS mixer resets on every PCM session close.
 #            The patch re-runs amixer before each PCM open, and uses the
 #            full ALSA device name (plughw:CARD=ArduinoImolaHPH,DEV=2).
-#   4. Deploy Qualcomm-Arduino-Edge-WS2026 example to /home/arduino/ArduinoApps/
+#   4. Deploy UNO Q EchoGlow example to /home/arduino/ArduinoApps/
 # =============================================================================
 
 set -euo pipefail
@@ -328,21 +328,21 @@ PYEOF
 }
 
 # ---------------------------------------------------------------------------
-# Step 4 — Deploy Qualcomm-Arduino-Edge-WS2026 example to ArduinoApps
+# Step 4 — Deploy UNO Q EchoGlow example to ArduinoApps
 # ---------------------------------------------------------------------------
 deploy_example() {
-  info "Step 4: Deploying qualcomm-arduino-edge-ws2026 to examples..."
+  info "Step 4: Deploying uno-q-echoglow to examples..."
 
   local script_dir
   script_dir="$(dirname "$(realpath "$0")")"
-  local src="${script_dir}/qualcomm-arduino-edge-ws2026"
+  local src="${script_dir}/uno-q-echoglow"
   local examples_dir
   examples_dir="$(_detect_examples_dir)"
-  local dest="${examples_dir}/qualcomm-arduino-edge-ws2026"
+  local dest="${examples_dir}/uno-q-echoglow"
 
   if [ ! -d "${src}" ]; then
     warn "Example folder not found: ${src}"
-    warn "Make sure qualcomm-arduino-edge-ws2026/ is next to this script."
+    warn "Make sure uno-q-echoglow/ is next to this script."
     return
   fi
 
@@ -386,8 +386,8 @@ verify() {
   fi
 
   local examples_dir; examples_dir="$(_detect_examples_dir)"
-  check "qualcomm-arduino-edge-ws2026 in examples" \
-    "test -f ${examples_dir}/qualcomm-arduino-edge-ws2026/app.yaml"
+  check "uno-q-echoglow in examples" \
+    "test -f ${examples_dir}/uno-q-echoglow/app.yaml"
 
   echo ""
   if [ "${warn_count}" -eq 0 ]; then

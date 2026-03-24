@@ -3,7 +3,7 @@
 <img src="assets/docs_assets/EchoGlow.jpeg" alt="drawing" width="250" height="200"/>
 
 
-The UNO Q EchoGlow is an AI-powered desktop light that can be operated with voice commands. It detects the keyword "Hey Arduino" through an analog microphone connected directly to the Arduino UNO Q, and toggles a NeoPixel strip connected via the onboard Qwiic port. These commands can be trained on Edge Impulse’s platform, and then uploaded to the Arduino UNO Q inside the EchoGlow. 
+The UNO Q EchoGlow is an AI-powered desktop light controlled by voice commands. It detects the keywords "Warmer-light", "Cooler-light", "Dimmer", and "Brighter" through an analog microphone connected directly to the Arduino UNO Q, and controls a NeoPixel strip connected via the onboard Qwiic port. These commands are trained on Edge Impulse’s platform and uploaded to the Arduino UNO Q inside the EchoGlow.
 Be sure to visit the project every now and then to check for updates and downloads:
 
 This setup uses the analog microphone input of the Arduino UNO Q instead of a USB microphone (unlike the standard keyword-spotting example), requiring a one-time board configuration before launching the app.
@@ -17,7 +17,7 @@ This setup uses the analog microphone input of the Arduino UNO Q instead of a US
 
 ## Hardware and Software Requirements
 
-![Hardware setup](Software/qualcomm-arduino-edge-ws2026/assets/docs_assets/hardware-setup.jpeg)
+![Hardware setup](Software/uno-q-echoglow/assets/docs_assets/hardware-setup.jpeg)
 
 ### Hardware
 
@@ -74,12 +74,18 @@ When running this firmware, only the analog microphone is available (no USB micr
 3. Wait for the app to launch.
 
 
-4. Say **"Hey Arduino"** into the microphone.
-5. The NeoPixel strip toggles green on the first detection, and off on the next.
+4. Say one of the voice commands into the microphone.
+
+| Keyword | Action |
+|---|---|
+| **Warmer-light** | Sets NeoPixel color to warm white (RGB 255, 194, 138) |
+| **Cooler-light** | Sets NeoPixel color to cool white (RGB 144, 213, 255) |
+| **Brighter** | Increases brightness by 40% |
+| **Dimmer** | Decreases brightness by 40% |
 
 ### How it Works
 
-The `keyword_spotting` Brick continuously monitors the analog microphone input for the keyword **"Hey Arduino"**. When detected, it calls the microcontroller via the Bridge, which toggles the NeoPixel strip.
+The `keyword_spotting` Brick continuously monitors the analog microphone input. When a keyword is detected, it calls the microcontroller via the Bridge, which adjusts the NeoPixel strip accordingly. The NeoPixel starts at neutral white (RGB 255, 255, 255) at boot.
 
 
 #### Why a setup script is needed
@@ -95,11 +101,12 @@ The Arduino UNO Q uses a **Qualcomm QRB2210 SoC** with a Qualcomm LPASS audio DS
 **Python side (`python/main.py`):**
 
 - `spotter = KeywordSpotting()` — initializes the audio listener on the analog mic input.
-- `spotter.on_detect("hey_arduino", on_keyword_detected)` — registers the callback for the "Hey Arduino" keyword.
-- `Bridge.call("keyword_detected")` — notifies the microcontroller that the keyword was detected.
+- `spotter.on_detect("Warmer-light", ...)` — registers a callback for each keyword.
+- `Bridge.call("warmer_light")` — notifies the microcontroller which keyword was detected.
 
 **Microcontroller side (`sketch/sketch.ino`):**
 
 - `seesaw_NeoPixel strip(..., &Wire1)` — the NeoDriver is on `Wire1`, which maps to the Qwiic port on the UNO Q.
-- `Bridge.provide("keyword_detected", wake_up)` — registers the handler called by the Python side.
-- `wake_up()` — toggles the NeoPixel strip between green and off on each detection.
+- `Bridge.provide("warmer_light", warmer_light)` — registers the handler called by the Python side.
+- `warmer_light()` / `cooler_light()` — set the NeoPixel color to warm or cool white.
+- `brighter()` / `dimmer()` — increase or decrease the global brightness by 40%.

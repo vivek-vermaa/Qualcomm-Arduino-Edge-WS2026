@@ -3,10 +3,10 @@ profiles:
     platforms:
       - platform: arduino:zephyr
     libraries:
-      - Arduino_RouterBridge (0.2.2)
+      - Arduino_RouterBridge (0.3.0)
       - Adafruit seesaw Library (1.7.9)
       - Adafruit BusIO (1.16.1)
-      - dependency: Arduino_RPClite (0.2.0)
+      - dependency: Arduino_RPClite (0.2.1)
       - dependency: ArxContainer (0.7.0)
       - dependency: ArxTypeTraits (0.3.2)
       - dependency: DebugLog (0.8.4)

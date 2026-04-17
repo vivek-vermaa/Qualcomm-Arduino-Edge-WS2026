@@ -1,6 +1,12 @@
 # SPDX-FileCopyrightText: Copyright (C) Electronic Cats
 # SPDX-License-Identifier: MPL-2.0
 
+# Modified and extended by Vivek Verma
+# Forked to experiment with edge AI, voice interaction, and real-time hardware response
+# Built on top of an excellent foundation to explore how embedded systems and AI
+# can come together for intuitive, on-device experiences
+
+
 from arduino.app_utils import *
 from arduino.app_bricks.keyword_spotting import KeywordSpotting
 import time

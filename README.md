@@ -1,111 +1,274 @@
-# UNO Q EchoGlow Workshop
+#  UNO Q Voice Matrix AI System
 
-<img src="Software/uno-q-echoglow/assets/docs_assets/EchoGlow.jpeg" alt="drawing" width="250" height="200"/>
+### Developed and Adapted by **Vivek Verma**
 
+---
 
-The UNO Q EchoGlow is an AI-powered desktop light controlled by voice commands. It detects the keywords "Warmer-light", "Cooler-light", "Dimmer", and "Brighter" through an analog microphone connected directly to the Arduino UNO Q, and controls a NeoPixel strip connected via the onboard Qwiic port. These commands are trained on Edge Impulse’s platform and uploaded to the Arduino UNO Q inside the EchoGlow.
-Be sure to visit the project every now and then to check for updates and downloads:
+##  What This Project Does
 
-This setup uses the analog microphone input of the Arduino UNO Q instead of a USB microphone (unlike the standard keyword-spotting example), requiring a one-time board configuration before launching the app.
+This project turns your Arduino UNO Q into an **AI-powered interactive system** that connects:
 
-[https://hackaday.io/project/205386-arduino-uno-q-echoglow](https://hackaday.io/project/205386-arduino-uno-q-echoglow)
+*  **Voice commands (AI / Edge ML)**
+*  **LED Matrix display (real-time feedback)**
+*  **RGB LEDs (visual response)**
+*  **Environmental sensing (BME680)**
 
-## Bricks Used
+ When a command is detected (like **“red”, “blue”, “green”, “vivek”**), the system:
 
-- `keyword_spotting` — detects sound patterns and triggers an event when a keyword is matched.
+1. Displays a corresponding **letter (R, B, G, V)** on the LED matrix
+2. Blinks the associated **RGB LED**, then keeps it ON
+3. Reads and prints **live environmental data** from the BME680 sensor
 
-## Hardware and Software Requirements
+This creates a **complete edge-AI feedback loop**:
 
-![Hardware setup](Software/uno-q-echoglow/assets/docs_assets/hardware-setup.jpeg)
+> Voice → AI model → Command → Hardware response → Sensor data
 
-### Hardware
+---
 
-- [Arduino® UNO Q](https://store.arduino.cc/products/uno-q)
-- SupplyFrame analog microphone board (connected to the analog mic input)
-- SupplyFrame NeoDriver I2C board (address `0x60`) with NeoPixel strip, connected to the Qwiic port
+##  Supported Commands
 
-### Software
+| Command | Action                               |
+| ------- | ------------------------------------ |
+| `vivek` | Displays **V** + prints sensor data  |
+| `red`   | Displays **R** + activates RED LED   |
+| `blue`  | Displays **B** + activates BLUE LED  |
+| `green` | Displays **G** + activates GREEN LED |
 
-- Arduino App Lab
-- One-time board setup — see [Setup](#setup) below
+---
 
-## Setup
+##  Attribution
 
-> **This step is required once per board.** It configures the ALSA audio subsystem, creates the device symlink expected by `arduino-app-cli`, and patches the Docker image to support the analog microphone.
+This project is **adapted and extended** from:
 
-Clone the repository on the Arduino UNO Q and run the setup script:
+ [https://github.com/ElectronicCats/Qualcomm-Arduino-Edge-WS2026](https://github.com/ElectronicCats/Qualcomm-Arduino-Edge-WS2026)
 
 ```bash
-sudo git clone https://github.com/ElectronicCats/Qualcomm-Arduino-Edge-WS2026
 cd Qualcomm-Arduino-Edge-WS2026
-sudo Software/setup-arduino-q-mic-applab.sh
 ```
 
-After the script completes, **reboot the board**:
+The original repository provides:
 
-```bash
-sudo reboot
+* UNO Q AI + Linux integration
+* Bridge communication system
+* Edge AI pipeline support
+
+This project extends it with:
+
+* Custom LED matrix rendering
+* RGB interaction logic
+* Sensor integration
+* Personalized command system
+
+---
+
+##  Hardware Required
+
+* Arduino UNO Q
+* Onboard LED Matrix (12×8)
+* 3 LEDs (Red, Blue, Green)
+* BME680 sensor
+* Microphone (for AI voice input via Linux side)
+
+---
+
+##  Pin Configuration
+
+| Component  | Pin |
+| ---------- | --- |
+| Red LED    | D2  |
+| Blue LED   | D3  |
+| Green LED  | D4  |
+| BME680 SDA | A4  |
+| BME680 SCL | A5  |
+
+---
+
+##  System Architecture
+
+```
+Voice Input (Mic)
+        ↓
+Edge AI Model (Edge Impulse)
+        ↓
+Python / App Layer
+        ↓
+Bridge (RouterBridge)
+        ↓
+Arduino Sketch
+        ↓
+LED Matrix + RGB + Sensor Output
 ```
 
-The script copies this example to `/home/arduino/ArduinoApps/` automatically. If you need to re-deploy it manually:
+---
 
-```bash
-sudo Software/setup-arduino-q-mic-applab.sh --deploy-example
+##  How to Train the AI Model (Edge Impulse)
+
+This is the **core of your system**.
+
+### Step 1: Go to Edge Impulse
+
+* Open: [https://edgeimpulse.com](https://edgeimpulse.com)
+* Create a new project
+* Choose:
+
+  * **Audio (Keyword Spotting)**
+
+---
+
+### Step 2: Collect Data
+
+Record multiple samples for each command:
+
+* “vivek”
+* “red”
+* “blue”
+* “green”
+
+ Tips:
+
+* Record **20–50 samples per word**
+* Use different tones, speeds, and environments
+* Add **background noise samples**
+
+---
+
+### Step 3: Label Data
+
+Assign labels like:
+
+* `vivek`
+* `red`
+* `blue`
+* `green`
+
+---
+
+### Step 4: Create Impulse
+
+* Processing block: **Audio (MFCC)**
+* Learning block: **Classification (Neural Network)**
+
+---
+
+### Step 5: Train Model
+
+* Click **Train**
+* Ensure accuracy > **85%** for good performance
+
+---
+
+### Step 6: Deploy Model
+
+Export as:
+
+* **Linux (Python)** OR
+* **TensorFlow Lite**
+
+---
+
+### Step 7: Connect to Arduino via Bridge
+
+In your Python code:
+
+```python
+Bridge.call("red")
+Bridge.call("blue")
+Bridge.call("green")
+Bridge.call("vivek")
 ```
-#### Notes:
+
+ This triggers your Arduino functions:
+
+```cpp
+Bridge.provide("red", cmd_red);
 ```
-When running this firmware, only the analog microphone is available (no USB microphone). To revert this, format the UNO Q. 
+
+---
+
+##  How It Works (Code Overview)
+
+### LED Matrix
+
+* Uses a **12×8 pixel buffer**
+* Letters are drawn manually using pixel mapping
+
+### RGB LEDs
+
+* Blink 3 times → stay ON
+
+### BME680 Sensor
+
+Prints:
+
+* Temperature
+* Humidity
+* Pressure
+* Gas resistance
+
+### Bridge
+
+* Connects AI model (Python/Linux) → Arduino sketch
+
+---
+
+## How to Run
+
+1. Upload Arduino sketch
+2. Connect hardware
+3. Run AI model (Python / App Lab)
+4. Speak command
+
+---
+
+##  Example Output
+
+```
+[CMD] RED — showing R
+========= BME680 =========
+  Temperature : 25.3 C
+  Humidity    : 48.2 %
+  Pressure    : 1013.25 hPa
+  Gas         : 12.45 KOhms
+==========================
 ```
 
-## How to Use the Example
+---
 
-### Hardware Setup
+##  Why This Project is Powerful
 
-1. Connect the analog microphone board to the analog mic input of the Arduino UNO Q.
-2. Connect the SupplyFrame NeoDriver I2C board to the **Qwiic port** on the Arduino UNO Q.
-3. Connect a NeoPixel strip to the NeoDriver (up to 5 pixels supported out of the box).
+* Runs **AI locally (Edge AI)**
+* No cloud dependency
+* Real-time response
+* Combines **AI + Embedded + Sensors + UI**
 
+ This is a **complete edge intelligence system**, not just a demo.
 
-### Launch the App
+---
 
-1. Open **Arduino App Lab** and connect to the board using **Network Mode**.
-2. Open this example and click the **Play** button in the top right corner.
-3. Wait for the app to launch.
+##  Future Improvements
 
+* Add gesture recognition (MediaPipe)
+* Add camera-based object detection
+* Display live sensor graphs
+* Add mobile/web dashboard
+* Multi-language voice support
 
-4. Say one of the voice commands into the microphone.
+---
 
-| Keyword | Action |
-|---|---|
-| **Warmer-light** | Sets NeoPixel color to warm white (RGB 255, 194, 138) |
-| **Cooler-light** | Sets NeoPixel color to cool white (RGB 144, 213, 255) |
-| **Brighter** | Increases brightness by 40% |
-| **Dimmer** | Decreases brightness by 40% |
+##  License
 
-### How it Works
+MPL-2.0 (as per source code)
 
-The `keyword_spotting` Brick continuously monitors the analog microphone input. When a keyword is detected, it calls the microcontroller via the Bridge, which adjusts the NeoPixel strip accordingly. The NeoPixel starts at neutral white (RGB 255, 255, 255) at boot.
+---
 
+## 👨‍💻 Author
 
-#### Why a setup script is needed
+**Vivek Verma**
 
-The Arduino UNO Q uses a **Qualcomm QRB2210 SoC** with a Qualcomm LPASS audio DSP (Q6ASM). This DSP resets all ALSA mixer controls to `off` every time an audio capture session closes. The setup script:
+---
 
-- Configures the ALSA mixer and installs a systemd service that re-applies the configuration at boot.
-- Creates the `/dev/snd/by-id` device symlink expected by `arduino-app-cli` to detect the microphone.
-- Patches the Docker image used by `arduino-app-cli` so that its Python `Microphone` class re-runs the mixer setup before opening each PCM session, and uses the full ALSA device name (`plughw:CARD=ArduinoImolaHPH,DEV=2`) required inside containers.
+## Credits
 
-### Understanding the Code
-
-**Python side (`python/main.py`):**
-
-- `spotter = KeywordSpotting()` — initializes the audio listener on the analog mic input.
-- `spotter.on_detect("Warmer-light", ...)` — registers a callback for each keyword.
-- `Bridge.call("warmer_light")` — notifies the microcontroller which keyword was detected.
-
-**Microcontroller side (`sketch/sketch.ino`):**
-
-- `seesaw_NeoPixel strip(..., &Wire1)` — the NeoDriver is on `Wire1`, which maps to the Qwiic port on the UNO Q.
-- `Bridge.provide("warmer_light", warmer_light)` — registers the handler called by the Python side.
-- `warmer_light()` / `cooler_light()` — set the NeoPixel color to warm or cool white.
-- `brighter()` / `dimmer()` — increase or decrease the global brightness by 40%.
+* Electronic Cats — original UNO Q Edge AI setup
+* Qualcomm-Arduino-Edge-WS2026 repository — base implementation
+* Extended, customized, and integrated by Vivek Verma

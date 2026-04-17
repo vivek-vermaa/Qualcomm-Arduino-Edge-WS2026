@@ -4,7 +4,8 @@ profiles:
       - platform: arduino:zephyr
     libraries:
       - Arduino_RouterBridge (0.3.0)
-      - Adafruit seesaw Library (1.7.9)
+      - Adafruit BME680 Library (2.0.4)
+      - Adafruit Unified Sensor (1.1.14)
       - Adafruit BusIO (1.16.1)
       - dependency: Arduino_RPClite (0.2.1)
       - dependency: ArxContainer (0.7.0)

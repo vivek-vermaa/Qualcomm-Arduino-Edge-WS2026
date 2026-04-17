@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: Copyright (C) Electronic Cats
 // SPDX-License-Identifier: MPL-2.0
 
-// Modified and extended by Vivek Verma
+// Modified and extended by Copyright (c) Vivek Verma -2026
 // Forked to explore real-time edge AI on Arduino UNO Q
 // Focused on building systems that can listen, understand, and respond locally
 // without cloud dependency, bridging embedded systems with intelligent behavior

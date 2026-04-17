@@ -86,7 +86,7 @@ This project extends it with:
 ##  System Architecture
 
 ```
-Voice Input (Mic)
+Voice Input (Webcam Mic)
         ↓
 Edge AI Model (Edge Impulse)
         ↓

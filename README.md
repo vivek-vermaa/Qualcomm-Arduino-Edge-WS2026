@@ -67,7 +67,7 @@ This project extends it with:
 * Onboard LED Matrix (12×8)
 * 3 LEDs (Red, Blue, Green)
 * BME680 sensor
-* Microphone (for AI voice input via Linux side)
+* Microphone or Wecam (for AI voice input via Linux side). No additional I2S microohone or any embedded module needed for this project
 
 ---
 

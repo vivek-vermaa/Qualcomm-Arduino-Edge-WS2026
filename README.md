@@ -261,9 +261,9 @@ MPL-2.0 (as per source code)
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
-**Vivek Verma**
+**Vivek Verma <tovivekverma@hotmail.com>**
 
 ---
 

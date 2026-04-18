@@ -1,35 +1,47 @@
 # SPDX-FileCopyrightText: Copyright (C) Electronic Cats
 # SPDX-License-Identifier: MPL-2.0
-
-# Modified and extended by Copyrighr (C) Vivek Verma -2026
-# Forked to experiment with edge AI, voice interaction, and real-time hardware response
-# Built on top of an excellent foundation to explore how embedded systems and AI
-# can come together for intuitive, on-device experiences
-
+# Modified and extended by Copyright (c) Vivek Verma - 2026
 
 from arduino.app_utils import *
 from arduino.app_bricks.keyword_spotting import KeywordSpotting
+from datetime import datetime, timezone, timedelta
 import time
 
-spotter = KeywordSpotting()
+# Set your local timezone offset here (Germany = UTC+2 in summer, UTC+1 in winter)
+LOCAL_TZ = timezone(timedelta(hours=2))   # CEST — change to hours=1 for CET (winter)
 
-# Debounce — ignore repeated triggers within 3 seconds
-last_trigger_time = 0
+def ts():
+    return datetime.now(LOCAL_TZ).strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+# Add this Bridge.provide for logging from Arduino
+def on_arduino_log(msg):
+    print(f"[{ts()}] [ARDUINO] {msg}", flush=True)
+
+Bridge.provide("pylog", on_arduino_log)
+
+spotter = KeywordSpotting()
+last_time = 0
 DEBOUNCE_SECONDS = 3
 
 def trigger(word):
-    global last_trigger_time
+    global last_time
     now = time.time()
-    if now - last_trigger_time < DEBOUNCE_SECONDS:
-        print(f"[SKIP] {word} ignored — too soon after last trigger")
+    if now - last_time < DEBOUNCE_SECONDS:
+        print(f"[{ts()}] [SKIP] {word} — too soon", flush=True)
         return
-    last_trigger_time = now
-    print(f"[TRIGGER] {word}")
-    Bridge.call(word)
+    last_time = now
+    try:
+        print(f"[{ts()}] [TRIGGER] {word}", flush=True)
+        Bridge.call(word)
+        print(f"[{ts()}] [SENT] {word} to Bridge", flush=True)
+        time.sleep(0.5)
+    except Exception as e:
+        print(f"[{ts()}] [ERROR] {e}", flush=True)
 
 spotter.on_detect("Vivek", lambda: trigger("vivek"))
 spotter.on_detect("Red",   lambda: trigger("red"))
 spotter.on_detect("Blue",  lambda: trigger("blue"))
 spotter.on_detect("Green", lambda: trigger("green"))
+
+print(f"[{ts()}] [INFO] Ready — say: vivek | red | blue | green", flush=True)
 
 App.run()

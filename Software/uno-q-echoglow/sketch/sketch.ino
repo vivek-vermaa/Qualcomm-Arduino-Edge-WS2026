@@ -5,7 +5,7 @@
    History: 
 
     18.04.2026:  Upgrade: Robust Word Detection, Command Dictionary, & Visual States
-    18.04.2026:  Adding Zephr RTOS Support.
+    18.04.2026:  Adding Zephr RTOS Support, LED Logic
 */
 
 

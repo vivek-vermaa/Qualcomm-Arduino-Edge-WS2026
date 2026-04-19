@@ -218,7 +218,8 @@ Prints:
 
 Probe of I2C Pin of BME680  from my Saleae Logic analyzer Channel 0 -> SCL, Channel 1 -> SDA  and ground
 
-<img width="1918" height="1155" alt="image" src="https://github.com/user-attachments/assets/d4104274-5cce-4dca-8ec4-d3f892881b86" />
+<img width="1916" height="1157" alt="image" src="https://github.com/user-attachments/assets/5afab7b0-42ba-4af4-a2c4-ae2a424484ce" />
+
 
 
 

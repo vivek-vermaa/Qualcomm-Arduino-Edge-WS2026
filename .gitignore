@@ -16,3 +16,5 @@ Hardware/QWIIC_LEDs/QWIIC_LEDs-backups/
 *.drl
 
 *.gbrjob
+/Software/uno-q-echoglow/.claude/worktrees/optimistic-hofstadter-dbd423
+/Software/uno-q-echoglow/.claude/worktrees/modest-nobel-467aca

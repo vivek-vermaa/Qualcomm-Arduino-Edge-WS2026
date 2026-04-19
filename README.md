@@ -49,6 +49,7 @@ chmod 777 setup-arduino-q-mic-applab.sh
 run ./sudo Software/setup-arduino-q-mic-applab.sh
 sudo reboot
 Close all the windows and terminal and login again.
+You will be able to find in the Examples section of App lab.
 
 ```
 

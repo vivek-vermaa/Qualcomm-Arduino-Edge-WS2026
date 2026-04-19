@@ -204,6 +204,9 @@ Bridge.provide("red", cmd_red);
 
 * Blink 3 times → stay ON
 
+* <img width="1290" height="1131" alt="image" src="https://github.com/user-attachments/assets/014f2e4b-ba34-4fa8-aee0-d970d090ace0" />
+
+
 ### BME680 Sensor
 
 Prints:

@@ -44,7 +44,7 @@ This project is **adapted and extended** from:
 
 ```bash
 git clone https://github.com/vivek-vermaa/Qualcomm-Arduino-Edge-WS2026.git
-cd Qualcomm-Arduino-Edge-WS2026
+cd Qualcomm-Arduino-Edge-WS2026/Software
 chmod 777 setup-arduino-q-mic-applab.sh
 run ./sudo Software/setup-arduino-q-mic-applab.sh
 sudo reboot

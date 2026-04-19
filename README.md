@@ -50,6 +50,7 @@ run ./sudo Software/setup-arduino-q-mic-applab.sh
 sudo reboot
 Close all the windows and terminal and login again.
 You will be able to find in the Examples section of App lab.
+To create a new project you need to copy it and you can start experimenting.
 
 ```
 

@@ -216,6 +216,11 @@ Prints:
 * Pressure
 * Gas resistance
 
+Probe of I2C Pin from my logic analyzer Channel 0 -> SCL, Channel 1 -> SDA
+
+<img width="1919" height="1150" alt="image" src="https://github.com/user-attachments/assets/b802f6a4-f280-4d45-8346-23f7e51e10ae" />
+
+
 ### Bridge
 
 * Connects AI model (Python/Linux) → Arduino sketch

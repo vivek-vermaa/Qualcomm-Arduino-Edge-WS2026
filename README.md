@@ -52,7 +52,7 @@ cd Qualcomm-Arduino-Edge-WS2026/Software
 
 chmod 777 setup-arduino-q-mic-applab.sh
 
-run ./sudo Software/setup-arduino-q-mic-applab.sh
+./sudo Software/setup-arduino-q-mic-applab.sh
 
 sudo reboot
 

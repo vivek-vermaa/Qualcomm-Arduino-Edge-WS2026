@@ -42,6 +42,8 @@ This project is **adapted and extended** from:
 
  [https://github.com/ElectronicCats/Qualcomm-Arduino-Edge-WS2026](https://github.com/ElectronicCats/Qualcomm-Arduino-Edge-WS2026)
 
+ Steps how to use this repo.
+
 ```bash
 
 git clone https://github.com/vivek-vermaa/Qualcomm-Arduino-Edge-WS2026.git
